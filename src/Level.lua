@@ -1,8 +1,8 @@
 Level=Class{}
 
-function Level:init(currentLevel,highscore)
+function Level:init(currentLevel)
     self.currentLevel=currentLevel
-    self.highscore=highscore
+
     self.world=love.physics.newWorld(0, 600)
     self.player=Player({
         texture='blue-wizard',
@@ -59,8 +59,7 @@ function Level:init(currentLevel,highscore)
                     gSounds['victory']:play()
                     gStateMachine:change('victory',{
                         background=self.background,
-                        level=self.currentLevel,
-                        highscore=self.highscore
+                        level=self.currentLevel
                     })
                 end
                 gSounds['bounce']:stop()
@@ -123,10 +122,10 @@ function Level:init(currentLevel,highscore)
     
     
     self.edgeGroundShape=love.physics.newEdgeShape(0, 0, VIRTUAL_WIDTH, 0)
-    self.edgeWallShape=love.physics.newEdgeShape(0, 0, 0, VIRTUAL_HEIGHT*2)
+    self.edgeWallShape=love.physics.newEdgeShape(0, 0, 0, VIRTUAL_HEIGHT*5)
     self.groundBody=love.physics.newBody(self.world,0,VIRTUAL_HEIGHT-64,'static')
-    self.wallLeftBody=love.physics.newBody(self.world,0,0,'static')
-    self.wallRightBody=love.physics.newBody(self.world,VIRTUAL_WIDTH,0,'static')
+    self.wallLeftBody=love.physics.newBody(self.world,0,-VIRTUAL_HEIGHT,'static')
+    self.wallRightBody=love.physics.newBody(self.world,VIRTUAL_WIDTH,-VIRTUAL_HEIGHT,'static')
     self.groundFixture=love.physics.newFixture(self.groundBody, self.edgeGroundShape)
     self.leftWallFixture=love.physics.newFixture(self.wallLeftBody,self.edgeWallShape)
     self.RightWallFixture=love.physics.newFixture(self.wallRightBody,self.edgeWallShape)
@@ -178,7 +177,6 @@ function Level:update(dt)
         self.player.body:destroy()
         gStateMachine:change('game-over',{
             background=self.background,
-            highscore=self.highscore,
             currentLevel=self.currentLevel
         })
     end

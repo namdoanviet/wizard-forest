@@ -2,16 +2,30 @@
 
 require 'src/Dependencies'
 
+local platform = love.system.getOS()
+local mobileBuild = (platform == 'Android' or platform == 'iOS')
 function love.load()
     math.randomseed(os.time())
     --love.graphics.setDefaultFilter('nearest', 'nearest')
     love.window.setTitle('Wizard Forest')
 
-    push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT, {
-        fullscreen = false,
-        vsync = true,
-        resizable = true
+    local w,h,flags = love.window.getMode()
+
+    -- push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT, {
+    --     fullscreen = false,
+    --     vsync = true,
+    --     resizable = true
+    -- })
+
+    push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, w, h, {
+        fullscreen = mobileBuild,
+        resizable = not mobileBuild,
+        highdpi=flags.highdpi,
+        canvas=true,
+        stretched = true,
+        pixelperfect = false
     })
+    
 
     gStateMachine = StateMachine {
         ['start'] = function() return StartState() end,
@@ -20,10 +34,11 @@ function love.load()
         ['victory']=function() return VictoryState() end,
         ['begin-game']=function() return BeginGameState() end
     }
-    gStateMachine:change('start',{
-        highscore=loadhighscore()
-    })
+    -- gStateMachine:change('start',{
+    --     highscore=loadhighscore()
+    -- })
 
+    gStateMachine:change('start')
     gSounds['music']:setLooping(true)
     gSounds['music']:play()
 
@@ -83,17 +98,17 @@ function love.draw()
     push:finish()
 end
 
-function loadhighscore()
-    love.filesystem.setIdentity('wizard-forest1')
-    local highscore=0
-    if not love.filesystem.exists('wizard-forest1.lst') then
-        local scores='1'
-        love.filesystem.write('wizard-forest1.lst',scores)
-    end
+-- function loadhighscore()
+--     love.filesystem.setIdentity('wizard-forest1')
+--     local highscore=0
+--     if not love.filesystem.exists('wizard-forest1.lst') then
+--         local scores='1'
+--         love.filesystem.write('wizard-forest1.lst',scores)
+--     end
 
-    for line in love.filesystem.lines('wizard-forest1.lst') do
-        highscore=tonumber(line)
-    end
+--     for line in love.filesystem.lines('wizard-forest1.lst') do
+--         highscore=tonumber(line)
+--     end
 
-    return highscore
-end
+--     return highscore
+-- end

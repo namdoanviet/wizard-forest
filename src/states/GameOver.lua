@@ -2,18 +2,16 @@ GameOver=Class{__includes=BaseState}
 
 function GameOver:enter(params)
     self.background=params.background
-    self.highscore=params.highscore
-    self.currentLevel=params.currentLevel
-    if self.currentLevel>self.highscore then
-        self.highscore=self.currentLevel
-        love.filesystem.write('wizard-forest1.lst',tostring(self.highscore))
-    end
+    -- self.highscore=params.highscore
+    -- self.currentLevel=params.currentLevel
+    -- if self.currentLevel>self.highscore then
+    --     self.highscore=self.currentLevel
+    --     love.filesystem.write('wizard-forest1.lst',tostring(self.highscore))
+    -- end
 end
 function GameOver:update(dt)
     if love.mouse.wasPressed(1) or love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') then 
-        gStateMachine:change('start',{
-            highscore=self.highscore
-        })
+        gStateMachine:change('start')
     end
 end
 
