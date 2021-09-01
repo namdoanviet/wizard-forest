@@ -167,7 +167,7 @@ function Level:update(dt)
         self.isPaused=not self.isPaused
     elseif not self.isPaused then 
         self.world:update(dt)
-
+        Timer.update(dt)
         if love.mouse.wasPressed(1) then
             self.aiming=true
         elseif love.mouse.wasReleased(1) and self.aiming then
