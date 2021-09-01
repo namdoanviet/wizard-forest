@@ -69,19 +69,27 @@ gTextures={
     ['blue-wizard']=love.graphics.newImage('graphics/bluewizard.png'),
     ['main-control']=love.graphics.newImage('graphics/move-control.png'),
     ['menu-control']=love.graphics.newImage('graphics/move-control-menu5.png'),
-    ['flag']=love.graphics.newImage('graphics/flag.png')
+    ['flag']=love.graphics.newImage('graphics/flag.png'),
+    ['resume']=love.graphics.newImage('graphics/resume.png'),
+    ['pause']=love.graphics.newImage('graphics/pause.png'),
+    ['cursor']=love.graphics.newImage('graphics/cursor.png'),
+    ['vietnamflag']=love.graphics.newImage('graphics/vietnam.png')
 }
 
 gFrames = {
     ['mossy'] = {
         love.graphics.newQuad(96, 0, 128, 128, gTextures['mossy']:getDimensions()),
-        love.graphics.newQuad(64, 384, 256, 128, gTextures['mossy']:getDimensions()),
-        love.graphics.newQuad(384, 384, 128, 128, gTextures['mossy']:getDimensions())
+        love.graphics.newQuad(64, 384, 256, 126, gTextures['mossy']:getDimensions()),
+        love.graphics.newQuad(384, 384, 126, 126, gTextures['mossy']:getDimensions())
     },
     ['blue-wizard']=GenerateQuads(gTextures['blue-wizard'],128,128),
     ['main-control']=GenerateQuads(gTextures['main-control'],30,30),
     ['menu-control']=GenerateQuads(gTextures['menu-control'],112,112),
-    ['flag']=GenerateQuads(gTextures['flag'],60,60)
+    ['flag']=GenerateQuads(gTextures['flag'],60,60),
+    ['resume']=GenerateQuads(gTextures['resume'],36,36),
+    ['pause']=GenerateQuads(gTextures['pause'],36,36),
+    ['cursor']=GenerateQuads(gTextures['cursor'],36,35),
+    ['vietnamflag']=GenerateQuads(gTextures['vietnamflag'],32,24)
 }
 
 gSounds = {

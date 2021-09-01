@@ -7,8 +7,8 @@ end
 
 function PlayState:enter(params)
     self.currentLevel=params.level
-    
-    self.level = Level(self.currentLevel)
+    self.highscore=params.highscore
+    self.level = Level(self.currentLevel,self.highscore)
     
 end
 

@@ -14,13 +14,17 @@ function StartState:init()
     self.RightWallFixture=love.physics.newFixture(self.wallRightBody,self.edgeWallShape)
 end
 
+function StartState:enter(params)
+    self.highscore=params.highscore
+end
 
 function StartState:update(dt)
     self.world:update(dt)
 
     if love.mouse.wasPressed(1) or love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') then
         gStateMachine:change('begin-game',{
-            level=1
+            level=1,
+            highscore=self.highscore
         })
     end
 
@@ -32,7 +36,9 @@ end
 function StartState:render()
     self.background:render()
     
-
+    love.graphics.setColor(100, 200, 150, 255)
+    love.graphics.setFont(gFonts['medium'])
+    love.graphics.print('Highest Level: '..tostring(self.highscore), 10,10)
     
     love.graphics.setColor(64, 64, 64, 200)
     love.graphics.rectangle('fill', VIRTUAL_WIDTH / 2 - 260, VIRTUAL_HEIGHT / 2-20 ,
@@ -51,4 +57,6 @@ function StartState:render()
         love.graphics.draw(gTextures['mossy'], gFrames['mossy'][1],
         i*96,VIRTUAL_HEIGHT-96)
     end
+
+    love.graphics.draw(gTextures['vietnamflag'],gFrames['vietnamflag'][1],VIRTUAL_WIDTH-32,0)
 end

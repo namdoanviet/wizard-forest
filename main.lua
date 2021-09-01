@@ -34,11 +34,10 @@ function love.load()
         ['victory']=function() return VictoryState() end,
         ['begin-game']=function() return BeginGameState() end
     }
-    -- gStateMachine:change('start',{
-    --     highscore=loadhighscore()
-    -- })
+    gStateMachine:change('start',{
+        highscore=loadhighscore()
+    })
 
-    gStateMachine:change('start')
     gSounds['music']:setLooping(true)
     gSounds['music']:play()
 
@@ -98,17 +97,17 @@ function love.draw()
     push:finish()
 end
 
--- function loadhighscore()
---     love.filesystem.setIdentity('wizard-forest1')
---     local highscore=0
---     if not love.filesystem.exists('wizard-forest1.lst') then
---         local scores='1'
---         love.filesystem.write('wizard-forest1.lst',scores)
---     end
+function loadhighscore()
+    love.filesystem.setIdentity('wizard-forest2')
+    local highscore=0
+    if not love.filesystem.exists('wizard-forest2.lst') then
+        local scores='0\n'
+        love.filesystem.write('wizard-forest2.lst',scores)
+    end
 
---     for line in love.filesystem.lines('wizard-forest1.lst') do
---         highscore=tonumber(line)
---     end
+    for line in love.filesystem.lines('wizard-forest2.lst') do
+        highscore=tonumber(line)
+    end
 
---     return highscore
--- end
+    return highscore
+end

@@ -1,8 +1,8 @@
 Level=Class{}
 
-function Level:init(currentLevel)
+function Level:init(currentLevel,highscore)
     self.currentLevel=currentLevel
-
+    self.highscore=highscore
     self.world=love.physics.newWorld(0, 600)
     self.player=Player({
         texture='blue-wizard',
@@ -59,7 +59,8 @@ function Level:init(currentLevel)
                     gSounds['victory']:play()
                     gStateMachine:change('victory',{
                         background=self.background,
-                        level=self.currentLevel
+                        level=self.currentLevel,
+                        highscore=self.highscore
                     })
                 end
                 gSounds['bounce']:stop()
@@ -141,6 +142,16 @@ function Level:init(currentLevel)
     shiftedX,shiftedY=baseX,baseY
     self.aiming=false
     self.frameFlag=1
+    self.isPaused=false
+    self.isStared=false
+    self.offset=false
+    Timer.every(0.5,function()
+        self.offset= not self.offset
+    end)
+    :limit(8)
+    :finish(function()
+        self.isStared=true
+    end)
     Timer.every(0.1,function()
         self.frameFlag=math.max(1,(self.frameFlag+1)%6)
     end)
@@ -150,36 +161,46 @@ end
 
 function Level:update(dt)
     
-    self.world:update(dt)
+    
     local xMouse,yMouse=push:toGame(love.mouse.getPosition())
-    if love.mouse.wasPressed(1) then
-        self.aiming=true
-    elseif love.mouse.wasReleased(1) and self.aiming then
-        shiftedX=baseX
-        shiftedY=baseY
-        self.aiming=false
-    elseif self.aiming then
-        shiftedX = math.min(baseX + 41, math.max(xMouse,baseX - 41))
-        shiftedY = math.min(baseY + 41, math.max(yMouse,baseY - 41))
-        
-        if shiftedY<baseY-25 then
-            love.keyboard.keysPressed['space']=true
-        end
-    end
+    if love.mouse.wasPressed(1) and xMouse>=VIRTUAL_WIDTH-36 and yMouse<=36 then
+        self.isPaused=not self.isPaused
+    elseif not self.isPaused then 
+        self.world:update(dt)
 
-    self.player:update(dt)
-    if self.isDead or #self.mossies>=50 then
-        Timer.clear()
-        for k,mossy in pairs(self.mossies) do
-            mossy.body:destroy()
+        if love.mouse.wasPressed(1) then
+            self.aiming=true
+        elseif love.mouse.wasReleased(1) and self.aiming then
+            shiftedX=baseX
+            shiftedY=baseY
+            self.aiming=false
+        elseif self.aiming then
+            shiftedX = math.min(baseX + 41, math.max(xMouse,baseX - 41))
+            shiftedY = math.min(baseY + 41, math.max(yMouse,baseY - 41))
+            
+            if shiftedY<baseY-25 then
+                love.keyboard.keysPressed['space']=true
+            end
         end
-        self.mossies={}
-        self.player.body:destroy()
-        gStateMachine:change('game-over',{
-            background=self.background,
-            currentLevel=self.currentLevel
-        })
+
+        self.player:update(dt)
+        if self.isDead or #self.mossies>=50 then
+            Timer.clear()
+            for k,mossy in pairs(self.mossies) do
+                mossy.body:destroy()
+            end
+            self.mossies={}
+            self.player.body:destroy()
+            gStateMachine:change('game-over',{
+                background=self.background,
+                currentLevel=self.currentLevel,
+                highscore=self.highscore
+            })
+        end
     end
+    
+
+    
     
     
 end
@@ -194,7 +215,20 @@ function Level:render()
     for k,mossy in pairs(self.mossies) do
         mossy:render()
     end
+    if self.isPaused then
+        love.graphics.draw(gTextures['pause'],gFrames['pause'][1],VIRTUAL_WIDTH-36,0)
+    else 
+        love.graphics.draw(gTextures['resume'],gFrames['resume'][1],VIRTUAL_WIDTH-36,0)
+    end
+
     love.graphics.draw(gTextures['flag'],gFrames['flag'][self.frameFlag],VIRTUAL_WIDTH-40,140)
+    if not self.isStared then
+        if not self.offset then
+            love.graphics.draw(gTextures['cursor'],gFrames['cursor'][1],VIRTUAL_WIDTH-45,105)
+        else
+            love.graphics.draw(gTextures['cursor'],gFrames['cursor'][1],VIRTUAL_WIDTH-40,110)
+        end
+    end
     self.endMossy:render()
     love.graphics.draw(gTextures['menu-control'],gFrames['menu-control'][1],baseX-41-15,baseY-41-15)
     love.graphics.draw(gTextures['main-control'],gFrames['main-control'][1],shiftedX-15,shiftedY-15)

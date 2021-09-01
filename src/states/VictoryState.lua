@@ -3,12 +3,14 @@ VictoryState=Class{__includes=BaseState}
 function VictoryState:enter(params)
     self.background=params.background
     self.level=params.level
+    self.highscore=params.highscore
 end
 
 function VictoryState:update(dt)
     if love.mouse.wasPressed(1) or love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') then 
         gStateMachine:change('begin-game',{
-            level=self.level+1
+            level=self.level+1,
+            highscore=self.highscore
         })
     end
 end
