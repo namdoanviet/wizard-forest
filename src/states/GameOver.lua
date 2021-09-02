@@ -8,13 +8,22 @@ function GameOver:enter(params)
         self.highscore=self.currentLevel
         love.filesystem.write('wizard-forest2.lst',tostring(self.highscore)..'\n')
     end
+    self.isStarted=false
+    Timer.after(0.5,function()
+        self.isStarted=true
+    end)
 end
 function GameOver:update(dt)
-    if love.mouse.wasPressed(1) or love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') then 
-        gStateMachine:change('start',{
-            highscore=self.highscore
-        })
+    local touchNumbers=howManyTouches()
+    Timer.update(dt)
+    if self.isStarted then
+        if  love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') or touchNumbers~=0 then 
+            gStateMachine:change('start',{
+                highscore=self.highscore
+            })
+        end
     end
+    
 end
 
 function GameOver:render()

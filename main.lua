@@ -42,9 +42,10 @@ function love.load()
     gSounds['music']:play()
 
     love.keyboard.keysPressed = {}
-    love.mouse.keysPressed = {}
-    love.mouse.keysReleased = {}
-
+    -- love.mouse.keysPressed = {}
+    -- love.mouse.keysReleased = {}
+    love.touch.touches={}
+    --love.touch.keysReleased={}
     paused = false
 end
 
@@ -60,25 +61,62 @@ function love.keypressed(key)
     love.keyboard.keysPressed[key] = true
 end
 
-function love.mousepressed(x, y, key)
-    love.mouse.keysPressed[key] = true
-end
+-- function love.mousepressed(x, y, key)
+--     love.mouse.keysPressed[key] = true
+-- end
 
-function love.mousereleased(x, y, key)
-    love.mouse.keysReleased[key] = true 
-end
+-- function love.mousereleased(x, y, key)
+--     love.mouse.keysReleased[key] = true 
+-- end
 
 function love.keyboard.wasPressed(key)
     return love.keyboard.keysPressed[key]
 end
 
-function love.mouse.wasPressed(key)
-    return love.mouse.keysPressed[key]
+-- function love.mouse.wasPressed(key)
+--     return love.mouse.keysPressed[key]
+-- end
+
+-- function love.mouse.wasReleased(key)
+--     return love.mouse.keysReleased[key]
+-- end
+
+function love.touchpressed(id,x,y,dx,dy,pressure)
+    x,y=push:toGame(x,y)
+    key=tostring(id)
+    love.touch.touches[key]={xx=x,yy=y}
 end
 
-function love.mouse.wasReleased(key)
-    return love.mouse.keysReleased[key]
+function love.touchmoved(id, x, y, dx, dy, pressure)
+    x,y=push:toGame(x,y)
+    key=tostring(id)
+    love.touch.touches[key].xx = x
+    love.touch.touches[key].yy = y
 end
+
+function love.touchreleased(id,x,y,dx,dy,pressure)
+    x,y=push:toGame(x,y)
+    key=tostring(id)
+    love.touch.touches[key]=nil
+end
+
+function howManyTouches()
+    local howMany = 0
+    for k,v in pairs(love.touch.touches) do
+      howMany = howMany + 1
+    end
+    return howMany
+end
+
+-- function love.touch.wasPressed(key)
+--     return love.touch.keysPressed[key]
+-- end
+
+-- function love.touch.wasReleased(key)
+--     return love.touch.keysReleased[key]
+-- end
+
+
 
 function love.update(dt)
     if not paused then
@@ -86,8 +124,11 @@ function love.update(dt)
         gStateMachine:update(dt)
 
         love.keyboard.keysPressed = {}
-        love.mouse.keysPressed = {}
-        love.mouse.keysReleased = {}
+        -- love.mouse.keysPressed = {}
+        -- love.mouse.keysReleased = {}
+        --love.touch.touches={}
+        -- love.touch.keysPressed={}
+        -- love.touch.keysReleased={}
     end
 end
 

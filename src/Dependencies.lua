@@ -73,7 +73,9 @@ gTextures={
     ['resume']=love.graphics.newImage('graphics/resume.png'),
     ['pause']=love.graphics.newImage('graphics/pause.png'),
     ['cursor']=love.graphics.newImage('graphics/cursor.png'),
-    ['vietnamflag']=love.graphics.newImage('graphics/vietnam.png')
+    ['vietnamflag']=love.graphics.newImage('graphics/vietnam.png'),
+    ['jump']=love.graphics.newImage('graphics/jumpbutton.png'),
+    ['jumplogo']=love.graphics.newImage('graphics/jumplogo.png')
 }
 
 gFrames = {
@@ -89,7 +91,9 @@ gFrames = {
     ['resume']=GenerateQuads(gTextures['resume'],36,36),
     ['pause']=GenerateQuads(gTextures['pause'],36,36),
     ['cursor']=GenerateQuads(gTextures['cursor'],36,35),
-    ['vietnamflag']=GenerateQuads(gTextures['vietnamflag'],32,24)
+    ['vietnamflag']=GenerateQuads(gTextures['vietnamflag'],32,24),
+    ['jump']=GenerateQuads(gTextures['jump'],100,100),
+    ['jumplogo']=GenerateQuads(gTextures['jumplogo'],100,100)
 }
 
 gSounds = {

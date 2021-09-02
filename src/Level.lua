@@ -160,27 +160,87 @@ end
 
 
 function Level:update(dt)
+
+    -- for i, id in ipairs(love.touch.keysPressed) do
+    --     for i, id in ipairs(touches) do
+    --         local xMouse, yMouse = push:toGame(love.touch.getPosition(id))
+    --         if love.touch.wasPressed(1) and xMouse>=VIRTUAL_WIDTH-36 and yMouse<=36 then
+    --             self.isPaused=not self.isPaused
+    --         elseif not self.isPaused then 
+    --             self.world:update(dt)
+    --             Timer.update(dt)
+    --             if love.mouse.wasPressed(1) then
+    --                 self.aiming=true
+    --             elseif love.mouse.wasReleased(1) and self.aiming then
+    --                 shiftedX=baseX
+    --                 shiftedY=baseY
+    --                 self.aiming=false
+    --             elseif self.aiming then
+    --                 shiftedX = math.min(baseX + 41, math.max(xMouse,baseX - 41))
+    --                 shiftedY = math.min(baseY + 41, math.max(yMouse,baseY - 41))
+                    
+    --                 if shiftedY<baseY-25 then
+    --                     love.keyboard.keysPressed['space']=true
+    --                 end
+    --             end
     
+    --             self.player:update(dt)
+    --             if self.isDead or #self.mossies>=50 then
+    --                 Timer.clear()
+    --                 for k,mossy in pairs(self.mossies) do
+    --                     mossy.body:destroy()
+    --                 end
+    --                 self.mossies={}
+    --                 self.player.body:destroy()
+    --                 gStateMachine:change('game-over',{
+    --                     background=self.background,
+    --                     currentLevel=self.currentLevel,
+    --                     highscore=self.highscore
+    --                 })
+    --             end
+    --         end
+    --     end
+    -- end
     
-    local xMouse,yMouse=push:toGame(love.mouse.getPosition())
-    if love.mouse.wasPressed(1) and xMouse>=VIRTUAL_WIDTH-36 and yMouse<=36 then
-        self.isPaused=not self.isPaused
-    elseif not self.isPaused then 
+    -- local xMouse,yMouse=push:toGame(love.mouse.getPosition())
+
+
+    
+    for i, id in pairs(love.touch.touches) do
+        --local xMouse, yMouse = push:toGame(love.touch.getPosition(id))
+        local xMouse, yMouse = id.xx,id.yy
+        if xMouse>=VIRTUAL_WIDTH-36 and yMouse<=36 then
+            self.isPaused=not self.isPaused
+        end
+
+    end
+    
+    if not self.isPaused then 
         self.world:update(dt)
         Timer.update(dt)
-        if love.mouse.wasPressed(1) then
-            self.aiming=true
-        elseif love.mouse.wasReleased(1) and self.aiming then
+        self.isMove=false
+        self.isJump=false
+        for i,id in pairs(love.touch.touches) do
+            local xMouse, yMouse = id.xx,id.yy
+            if xMouse>=VIRTUAL_WIDTH-220-40 and xMouse<=VIRTUAL_WIDTH-220+40 and yMouse>=baseY-50 and yMouse<=baseY+50 then
+                love.keyboard.keysPressed['space']=true
+                self.isJump=true
+            else
+                shiftedX = math.min(baseX + 41, math.max(xMouse,baseX - 41))
+                shiftedY = math.min(baseY + 41, math.max(yMouse,baseY - 41))
+                self.isMove=true
+            end
+        end
+
+        if not self.isMove then
             shiftedX=baseX
             shiftedY=baseY
-            self.aiming=false
-        elseif self.aiming then
-            shiftedX = math.min(baseX + 41, math.max(xMouse,baseX - 41))
-            shiftedY = math.min(baseY + 41, math.max(yMouse,baseY - 41))
-            
-            if shiftedY<baseY-25 then
-                love.keyboard.keysPressed['space']=true
-            end
+        end
+        local touchNumbers=howManyTouches()
+    
+        if touchNumbers==0 then
+            shiftedX=baseX
+            shiftedY=baseY
         end
 
         self.player:update(dt)
@@ -198,6 +258,13 @@ function Level:update(dt)
             })
         end
     end
+    
+    
+    -- if #touches ==0 then
+    --     shiftedX=baseX
+    --     shiftedY=baseY
+    -- end
+    
     
 
     
@@ -232,7 +299,12 @@ function Level:render()
     self.endMossy:render()
     love.graphics.draw(gTextures['menu-control'],gFrames['menu-control'][1],baseX-41-15,baseY-41-15)
     love.graphics.draw(gTextures['main-control'],gFrames['main-control'][1],shiftedX-15,shiftedY-15)
-    
-
+    love.graphics.draw(gTextures['jump'],gFrames['jump'][1],VIRTUAL_WIDTH-220-40,baseY-50)
+    love.graphics.draw(gTextures['jumplogo'],gFrames['jumplogo'][1],VIRTUAL_WIDTH-220-40,baseY-50)
+    if self.isJump then
+        love.graphics.setColor(64, 64, 64, 200)
+        love.graphics.circle('fill', VIRTUAL_WIDTH-220, baseY, 50)
+        love.graphics.setColor(255,255,255,255)
+    end
    
 end

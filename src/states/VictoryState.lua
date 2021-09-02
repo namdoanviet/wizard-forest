@@ -4,15 +4,23 @@ function VictoryState:enter(params)
     self.background=params.background
     self.level=params.level
     self.highscore=params.highscore
+    self.isStarted=false
+    Timer.after(0.5,function()
+        self.isStarted=true
+    end)
 end
 
 function VictoryState:update(dt)
-    if love.mouse.wasPressed(1) or love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') then 
-        gStateMachine:change('begin-game',{
-            level=self.level+1,
-            highscore=self.highscore
-        })
+    local touchNumbers=howManyTouches()
+    if self.isStarted then
+        if  love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') or touchNumbers~=0 then 
+            gStateMachine:change('begin-game',{
+                level=self.level+1,
+                highscore=self.highscore
+            })
+        end
     end
+    
 end
 
 function VictoryState:render()

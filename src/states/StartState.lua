@@ -12,6 +12,10 @@ function StartState:init()
     self.groundFixture=love.physics.newFixture(self.groundBody, self.edgeGroundShape)
     self.leftWallFixture=love.physics.newFixture(self.wallLeftBody,self.edgeWallShape)
     self.RightWallFixture=love.physics.newFixture(self.wallRightBody,self.edgeWallShape)
+    self.isStarted=false
+    Timer.after(0.5,function()
+        self.isStarted=true
+    end)
 end
 
 function StartState:enter(params)
@@ -20,13 +24,17 @@ end
 
 function StartState:update(dt)
     self.world:update(dt)
-
-    if love.mouse.wasPressed(1) or love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') then
-        gStateMachine:change('begin-game',{
-            level=1,
-            highscore=self.highscore
-        })
+    Timer.update(dt)
+    local touchNumbers=howManyTouches()
+    if self.isStarted then
+        if  love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') or touchNumbers~=0 then
+            gStateMachine:change('begin-game',{
+                level=1,
+                highscore=self.highscore
+            })
+        end
     end
+    
 
     if love.keyboard.wasPressed('escape') then
         love.event.quit()
