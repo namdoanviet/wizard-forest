@@ -222,7 +222,7 @@ function Level:update(dt)
         self.isJump=false
         for i,id in pairs(love.touch.touches) do
             local xMouse, yMouse = id.xx,id.yy
-            if xMouse>=VIRTUAL_WIDTH-220-40 and xMouse<=VIRTUAL_WIDTH-220+40 and yMouse>=baseY-50 and yMouse<=baseY+50 then
+            if xMouse>=VIRTUAL_WIDTH-220-50 and xMouse<=VIRTUAL_WIDTH-220+50 and yMouse>=baseY-50 and yMouse<=baseY+50 then
                 love.keyboard.keysPressed['space']=true
                 self.isJump=true
             else
@@ -299,11 +299,11 @@ function Level:render()
     self.endMossy:render()
     love.graphics.draw(gTextures['menu-control'],gFrames['menu-control'][1],baseX-41-15,baseY-41-15)
     love.graphics.draw(gTextures['main-control'],gFrames['main-control'][1],shiftedX-15,shiftedY-15)
-    love.graphics.draw(gTextures['jump'],gFrames['jump'][1],VIRTUAL_WIDTH-220-40,baseY-50)
-    love.graphics.draw(gTextures['jumplogo'],gFrames['jumplogo'][1],VIRTUAL_WIDTH-220-40,baseY-50)
+    love.graphics.draw(gTextures['jump'],gFrames['jump'][1],VIRTUAL_WIDTH-220-50,baseY-50)
+    love.graphics.draw(gTextures['jumplogo'],gFrames['jumplogo'][1],VIRTUAL_WIDTH-220-50,baseY-50)
     if self.isJump then
         love.graphics.setColor(64, 64, 64, 200)
-        love.graphics.circle('fill', VIRTUAL_WIDTH-220, baseY, 50)
+        love.graphics.circle('fill', VIRTUAL_WIDTH-220, baseY, 48)
         love.graphics.setColor(255,255,255,255)
     end
    
