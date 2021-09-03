@@ -12,6 +12,7 @@ end
 
 function VictoryState:update(dt)
     local touchNumbers=howManyTouches()
+    Timer.update(dt)
     if self.isStarted then
         if  love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') or touchNumbers~=0 then 
             gStateMachine:change('begin-game',{

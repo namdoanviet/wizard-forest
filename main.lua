@@ -90,8 +90,13 @@ end
 function love.touchmoved(id, x, y, dx, dy, pressure)
     x,y=push:toGame(x,y)
     key=tostring(id)
-    love.touch.touches[key].xx = x
-    love.touch.touches[key].yy = y
+    if x and y and love.touch.touches[key]~=nil then
+        love.touch.touches[key].xx = x
+        love.touch.touches[key].yy = y
+    else
+        love.touchreleased(id, 0, 0, 0, 0,1)
+    end
+    
 end
 
 function love.touchreleased(id,x,y,dx,dy,pressure)
