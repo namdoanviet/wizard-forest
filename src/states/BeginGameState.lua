@@ -46,11 +46,11 @@ function BeginGameState:render()
         love.graphics.draw(gTextures['mossy'], gFrames['mossy'][1],
         i*96,VIRTUAL_HEIGHT-96)
     end
-    love.graphics.setColor(95,205,228,200)
+    love.graphics.setColor(95/255,205/255,228/255,200/255)
     love.graphics.rectangle('fill',0,self.levelLabelY-8,VIRTUAL_WIDTH,80)
-    love.graphics.setColor(255,255,255,255)
+    love.graphics.setColor(255/255,255/255,255/255,255/255)
     love.graphics.setFont(gFonts['large'])
     love.graphics.printf('Level '..tostring(self.level),0,self.levelLabelY,VIRTUAL_WIDTH,'center')
-    love.graphics.setColor(255,255,255,self.transitionAlpha)
+    love.graphics.setColor(255/255,255/255,255/255,self.transitionAlpha/255)
     love.graphics.rectangle('fill',0,0,VIRTUAL_WIDTH,VIRTUAL_HEIGHT)
 end

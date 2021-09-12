@@ -22,8 +22,11 @@ function Level:init(currentLevel,highscore)
     self.mossies={}
     self.timeGap=self.currentLevel*0.1
     self.timeGapMax=math.max(0.5,1.1-self.currentLevel*0.1)
+    self.isPaused=false
     Timer.every(self.timeGapMax,function()
-        table.insert(self.mossies,Mossy(self.world,math.random(2,3),math.random(116)*10-10,-128,'Mossy','dynamic'))
+        if not self.isPaused then
+            table.insert(self.mossies,Mossy(self.world,math.random(2,3),math.random(116)*10-10,-128,'Mossy','dynamic'))
+        end
     end)
 
     function beginContact(a,b,coll)
@@ -142,7 +145,7 @@ function Level:init(currentLevel,highscore)
     shiftedX,shiftedY=baseX,baseY
     self.aiming=false
     self.frameFlag=1
-    self.isPaused=false
+    
     self.isStared=false
     self.offset=false
     Timer.every(0.5,function()
@@ -155,6 +158,7 @@ function Level:init(currentLevel,highscore)
     Timer.every(0.1,function()
         self.frameFlag=math.max(1,(self.frameFlag+1)%6)
     end)
+    self.endTime=true
     -- table.insert(self.mossies,Mossy(self.world,math.random(2,3),(math.random(103)-1)*10,-128,'Mossy'))
 end
 
@@ -204,31 +208,38 @@ function Level:update(dt)
     
     -- local xMouse,yMouse=push:toGame(love.mouse.getPosition())
 
+    Timer.update(dt)
 
     
     for i, id in pairs(love.touch.touches) do
         --local xMouse, yMouse = push:toGame(love.touch.getPosition(id))
         local xMouse, yMouse = id.xx,id.yy
-        if xMouse>=VIRTUAL_WIDTH-36 and yMouse<=36 then
-            self.isPaused=not self.isPaused
+        if xMouse~=nil and yMouse~=nil then
+            if xMouse>=VIRTUAL_WIDTH-36 and yMouse<=36 and self.endTime then
+                self.isPaused=not self.isPaused
+                self.endTime=false
+                Timer.after(0.5,function()
+                    self.endTime=true
+                end)
+            end
         end
-
     end
     
     if not self.isPaused then 
         self.world:update(dt)
-        Timer.update(dt)
         self.isMove=false
         self.isJump=false
         for i,id in pairs(love.touch.touches) do
             local xMouse, yMouse = id.xx,id.yy
-            if xMouse>=VIRTUAL_WIDTH-220-50 and xMouse<=VIRTUAL_WIDTH-220+50 and yMouse>=baseY-50 and yMouse<=baseY+50 then
-                love.keyboard.keysPressed['space']=true
-                self.isJump=true
-            else
-                shiftedX = math.min(baseX + 41, math.max(xMouse,baseX - 41))
-                shiftedY = math.min(baseY + 41, math.max(yMouse,baseY - 41))
-                self.isMove=true
+            if xMouse~=nil and yMouse~=nil then
+                if xMouse>=VIRTUAL_WIDTH-220-50 and xMouse<=VIRTUAL_WIDTH-220+50 and yMouse>=baseY-50 and yMouse<=baseY+50 then
+                    love.keyboard.keysPressed['space']=true
+                    self.isJump=true
+                else
+                    shiftedX = math.min(baseX + 41, math.max(xMouse,baseX - 41))
+                    shiftedY = math.min(baseY + 41, math.max(yMouse,baseY - 41))
+                    self.isMove=true
+                end
             end
         end
 
@@ -302,9 +313,9 @@ function Level:render()
     love.graphics.draw(gTextures['jump'],gFrames['jump'][1],VIRTUAL_WIDTH-220-50,baseY-50)
     love.graphics.draw(gTextures['jumplogo'],gFrames['jumplogo'][1],VIRTUAL_WIDTH-220-50,baseY-50)
     if self.isJump then
-        love.graphics.setColor(64, 64, 64, 200)
+        love.graphics.setColor(64/255, 64/255, 64/255, 200/255)
         love.graphics.circle('fill', VIRTUAL_WIDTH-220, baseY, 48)
-        love.graphics.setColor(255,255,255,255)
+        love.graphics.setColor(255/255,255/255,255/255,255/255)
     end
    
 end

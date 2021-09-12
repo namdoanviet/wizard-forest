@@ -44,21 +44,21 @@ end
 function StartState:render()
     self.background:render()
     
-    love.graphics.setColor(100, 200, 150, 255)
+    love.graphics.setColor(100/255, 200/255, 150/255, 255/255)
     love.graphics.setFont(gFonts['medium'])
     love.graphics.print('Highest Level: '..tostring(self.highscore), 10,10)
     
-    love.graphics.setColor(64, 64, 64, 200)
+    love.graphics.setColor(64/255, 64/255, 64/255, 200/255)
     love.graphics.rectangle('fill', VIRTUAL_WIDTH / 2 - 260, VIRTUAL_HEIGHT / 2-20 ,
         540, 120, 3)
 
-    love.graphics.setColor(200, 200, 200, 255)
+    love.graphics.setColor(200/255, 200/255, 200/255, 255/255)
     love.graphics.setFont(gFonts['huge'])
     love.graphics.printf('Wizard Forest', 0, VIRTUAL_HEIGHT / 2 - 40, VIRTUAL_WIDTH, 'center')
 
     
     
-    love.graphics.setColor(200, 200, 200, 255)
+    love.graphics.setColor(200/255, 200/255, 200/255, 255/255)
     love.graphics.setFont(gFonts['medium'])
     love.graphics.printf('Click to start!', 0, VIRTUAL_HEIGHT / 2 + 55, VIRTUAL_WIDTH, 'center')
     for i=0,15 do

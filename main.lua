@@ -16,7 +16,9 @@ function love.load()
     --     vsync = true,
     --     resizable = true
     -- })
-
+    local dpi_scale = love.window.getDPIScale()
+    w=w/dpi_scale
+    h=h/dpi_scale
     push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, w, h, {
         fullscreen = mobileBuild,
         resizable = not mobileBuild,
@@ -144,14 +146,14 @@ function love.draw()
 end
 
 function loadhighscore()
-    love.filesystem.setIdentity('wizard-forest2')
+    love.filesystem.setIdentity('wizard-forest3')
     local highscore=0
-    if not love.filesystem.exists('wizard-forest2.lst') then
+    if not love.filesystem.getInfo('wizard-forest3.txt') then
         local scores='0\n'
-        love.filesystem.write('wizard-forest2.lst',scores)
+        love.filesystem.write('wizard-forest3.txt',scores)
     end
 
-    for line in love.filesystem.lines('wizard-forest2.lst') do
+    for line in love.filesystem.lines('wizard-forest3.txt') do
         highscore=tonumber(line)
     end
 
