@@ -25,10 +25,10 @@ function PlayerJumpState:update(dt)
     else
         if love.keyboard.isDown('left') or shiftedX<baseX-15 then
             self.player.direction = 'left'
-            self.player.body:setLinearVelocity( -240, velY)
+            self.player.body:setLinearVelocity( -260, velY)
         elseif love.keyboard.isDown('right') or shiftedX>baseX+15 then
             self.player.direction = 'right'
-            self.player.body:setLinearVelocity( 240, velY)
+            self.player.body:setLinearVelocity( 260, velY)
         end
     end
 

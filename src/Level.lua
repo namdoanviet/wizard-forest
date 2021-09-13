@@ -3,7 +3,7 @@ Level=Class{}
 function Level:init(currentLevel,highscore)
     self.currentLevel=currentLevel
     self.highscore=highscore
-    self.world=love.physics.newWorld(0, 600)
+    self.world=love.physics.newWorld(0, 550)
     self.player=Player({
         texture='blue-wizard',
         x=VIRTUAL_WIDTH/2-64,y=VIRTUAL_HEIGHT-256,
@@ -151,7 +151,7 @@ function Level:init(currentLevel,highscore)
     Timer.every(0.5,function()
         self.offset= not self.offset
     end)
-    :limit(8)
+    :limit(10)
     :finish(function()
         self.isStared=true
     end)
@@ -232,7 +232,7 @@ function Level:update(dt)
         for i,id in pairs(love.touch.touches) do
             local xMouse, yMouse = id.xx,id.yy
             if xMouse~=nil and yMouse~=nil then
-                if xMouse>=VIRTUAL_WIDTH-220-50 and xMouse<=VIRTUAL_WIDTH-220+50 and yMouse>=baseY-50 and yMouse<=baseY+50 then
+                if xMouse>=VIRTUAL_WIDTH-220-75 and xMouse<=VIRTUAL_WIDTH-220+75 and yMouse>=baseY-75 and yMouse<=baseY+75 then
                     love.keyboard.keysPressed['space']=true
                     self.isJump=true
                 else
@@ -310,11 +310,11 @@ function Level:render()
     self.endMossy:render()
     love.graphics.draw(gTextures['menu-control'],gFrames['menu-control'][1],baseX-41-15,baseY-41-15)
     love.graphics.draw(gTextures['main-control'],gFrames['main-control'][1],shiftedX-15,shiftedY-15)
-    love.graphics.draw(gTextures['jump'],gFrames['jump'][1],VIRTUAL_WIDTH-220-50,baseY-50)
-    love.graphics.draw(gTextures['jumplogo'],gFrames['jumplogo'][1],VIRTUAL_WIDTH-220-50,baseY-50)
+    love.graphics.draw(gTextures['jump'],gFrames['jump'][1],VIRTUAL_WIDTH-220-75,baseY-75)
+    love.graphics.draw(gTextures['jumplogo'],gFrames['jumplogo'][1],VIRTUAL_WIDTH-220-75,baseY-75)
     if self.isJump then
         love.graphics.setColor(64/255, 64/255, 64/255, 200/255)
-        love.graphics.circle('fill', VIRTUAL_WIDTH-220, baseY, 48)
+        love.graphics.circle('fill', VIRTUAL_WIDTH-220, baseY, 71)
         love.graphics.setColor(255/255,255/255,255/255,255/255)
     end
    

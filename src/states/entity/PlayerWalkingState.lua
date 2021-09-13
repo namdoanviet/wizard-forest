@@ -21,10 +21,10 @@ function PlayerWalkingState:update(dt)
                 canInput=true
             })
         elseif love.keyboard.isDown('left') or shiftedX<baseX-15 then
-            self.player.body:setLinearVelocity( -240, 0)
+            self.player.body:setLinearVelocity( -260, 0)
             self.player.direction = 'left'
         elseif love.keyboard.isDown('right') or shiftedX>baseX+15 then
-            self.player.body:setLinearVelocity( 240, 0)
+            self.player.body:setLinearVelocity( 260, 0)
             self.player.direction = 'right'
         end
         

@@ -92,8 +92,8 @@ gFrames = {
     ['pause']=GenerateQuads(gTextures['pause'],36,36),
     ['cursor']=GenerateQuads(gTextures['cursor'],36,35),
     ['vietnamflag']=GenerateQuads(gTextures['vietnamflag'],32,24),
-    ['jump']=GenerateQuads(gTextures['jump'],100,100),
-    ['jumplogo']=GenerateQuads(gTextures['jumplogo'],100,100)
+    ['jump']=GenerateQuads(gTextures['jump'],150,150),
+    ['jumplogo']=GenerateQuads(gTextures['jumplogo'],150,150)
 }
 
 gSounds = {

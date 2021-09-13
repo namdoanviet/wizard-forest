@@ -9,8 +9,8 @@ function love.load()
     --love.graphics.setDefaultFilter('nearest', 'nearest')
     love.window.setTitle('Wizard Forest')
 
-    local w,h,flags = love.window.getMode()
-
+    local a,b,flags = love.window.getMode()
+    local w,h =love.window.getDesktopDimensions(flags.display)
     -- push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT, {
     --     fullscreen = false,
     --     vsync = true,
