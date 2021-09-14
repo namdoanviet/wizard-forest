@@ -21,7 +21,7 @@ function Level:init(currentLevel,highscore)
     
     self.mossies={}
     self.timeGap=self.currentLevel*0.1
-    self.timeGapMax=math.max(0.5,1.1-self.currentLevel*0.1)
+    self.timeGapMax=math.max(0.9,1.5-self.currentLevel*0.05)
     self.isPaused=false
     Timer.every(self.timeGapMax,function()
         if not self.isPaused then
@@ -74,10 +74,7 @@ function Level:init(currentLevel,highscore)
         if self.types['Player'] and self.types['Wall'] then
             gSounds['bounce']:stop()
             gSounds['bounce']:play()
-            -- local playerFixture=a:getUserData()=='Player' and a or b 
-            -- local obstacleFixture=a:getUserData()=='Wall' and a or b 
-            -- local xPos,yPos=playerFixture:getBody():getLinearVelocity()
-            -- playerFixture:getBody():setLinearVelocity(0,100)
+            
             self.player:changeState('falling',{
                 canInput=false
             })
@@ -165,48 +162,7 @@ end
 
 function Level:update(dt)
 
-    -- for i, id in ipairs(love.touch.keysPressed) do
-    --     for i, id in ipairs(touches) do
-    --         local xMouse, yMouse = push:toGame(love.touch.getPosition(id))
-    --         if love.touch.wasPressed(1) and xMouse>=VIRTUAL_WIDTH-36 and yMouse<=36 then
-    --             self.isPaused=not self.isPaused
-    --         elseif not self.isPaused then 
-    --             self.world:update(dt)
-    --             Timer.update(dt)
-    --             if love.mouse.wasPressed(1) then
-    --                 self.aiming=true
-    --             elseif love.mouse.wasReleased(1) and self.aiming then
-    --                 shiftedX=baseX
-    --                 shiftedY=baseY
-    --                 self.aiming=false
-    --             elseif self.aiming then
-    --                 shiftedX = math.min(baseX + 41, math.max(xMouse,baseX - 41))
-    --                 shiftedY = math.min(baseY + 41, math.max(yMouse,baseY - 41))
-                    
-    --                 if shiftedY<baseY-25 then
-    --                     love.keyboard.keysPressed['space']=true
-    --                 end
-    --             end
     
-    --             self.player:update(dt)
-    --             if self.isDead or #self.mossies>=50 then
-    --                 Timer.clear()
-    --                 for k,mossy in pairs(self.mossies) do
-    --                     mossy.body:destroy()
-    --                 end
-    --                 self.mossies={}
-    --                 self.player.body:destroy()
-    --                 gStateMachine:change('game-over',{
-    --                     background=self.background,
-    --                     currentLevel=self.currentLevel,
-    --                     highscore=self.highscore
-    --                 })
-    --             end
-    --         end
-    --     end
-    -- end
-    
-    -- local xMouse,yMouse=push:toGame(love.mouse.getPosition())
 
     Timer.update(dt)
 
@@ -271,14 +227,7 @@ function Level:update(dt)
     end
     
     
-    -- if #touches ==0 then
-    --     shiftedX=baseX
-    --     shiftedY=baseY
-    -- end
-    
-    
-
-    
+   
     
     
 end
